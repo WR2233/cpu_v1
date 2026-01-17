@@ -1,0 +1,44 @@
+
+.data
+.f2.000000f:
+	.word 0x40000000
+.f-0.001369f:
+	.word 0xbab38106
+.f-0.142857f:
+	.word 0xbe124925
+.f0.437500f:
+	.word 0x3ee00000
+.f0.111111f:
+	.word 0x3de38e38
+.f0.008333f:
+	.word 0x3c088666
+.f1.570796f:
+	.word 0x3fc90fd8
+.f0.785398f:
+	.word 0x3f490fd8
+.f-0.089764f:
+	.word 0xbdb7d66e
+.f-0.166660f:
+	.word 0xbe2aaaac
+.f-0.000196f:
+	.word 0xb94d64b6
+.f-0.500000f:
+	.word 0xbf000000
+.f1.000000f:
+	.word 0x3f800000
+.f0.041660f:
+	.word 0x3d2aa789
+.f0.060035f:
+	.word 0x3d75e7c5
+.f2.437500f:
+	.word 0x401c0000
+.f-0.333333f:
+	.word 0xbeaaaaaa
+.f0.000000f:
+	.word 0x0
+.f6.283185f:
+	.word 0x40c90fda
+.f3.141593f:
+	.word 0x40490fdc
+.f0.200000f:
+	.word 0x3e4ccccd

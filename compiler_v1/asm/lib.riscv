@@ -1,0 +1,42 @@
+min_caml_read_byte:
+# s11: input pointer
+# gp: mmio address
+	lb a0, 0(s11)
+	addi s11, s11, 1
+	jalr zero, ra, 0
+
+min_caml_print_byte:
+min_caml_print_char:
+# s11: input pointer
+# gp: mmio address
+	sb a0, 0(gp)
+	jalr zero, ra, 0
+
+min_caml_create_array:
+# a0: length
+# a1: value
+# tp: heap pointer
+	mv a2, tp
+	beq a0, zero, .min_caml_create_array_end
+.min_caml_create_array_loop:
+	sw a1, 0(tp)
+	addi tp, tp, 4
+	addi a0, a0, -1
+	blt zero, a0, .min_caml_create_array_loop
+.min_caml_create_array_end:
+	mv a0, a2
+	ret
+
+min_caml_create_float_array:
+# a0: length
+# fa0: value
+	add a2, zero, tp
+	beq a0, zero, .min_caml_create_float_array_end
+.min_caml_create_float_array_loop:
+	fsw fa0, 0(tp)
+	addi tp, tp, 4
+	addi a0, a0, -1
+	blt zero, a0, .min_caml_create_float_array_loop
+.min_caml_create_float_array_end:
+	add a0, zero, a2
+	ret

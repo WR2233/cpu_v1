@@ -1,0 +1,12 @@
+*.s
+*.parsed
+*.normalized
+*.optimized
+*.closure
+*.before*
+*.after*
+*.del_array
+*.riscv
+*.riscvreg
+*.vm
+*.reg

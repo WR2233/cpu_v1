@@ -1,0 +1,11 @@
+*.after*
+*.before*
+*.closure*
+*.parsed
+*.riscv
+*.riscvreg
+*.s
+*.vm
+*.reg
+*.ppm
+old

@@ -1,0 +1,8 @@
+*.after*
+*.before*
+*.closure*
+*.parsed
+*.s
+*.py
+*.reg
+*.vm

@@ -1,0 +1,817 @@
+read_num.90:
+	addi sp, sp, -52
+	sw a0, 32(sp)
+# 0~0
+# 2~2
+	sw ra, -4(sp)
+	lw a0, 12(sp)
+	addi sp, sp, -4
+	jal ra, min_caml_read_byte
+	addi sp, sp, 4
+	lw ra, -4(sp)
+	sw a0, 16(sp)
+# 3~3
+	addi t0, zero, 48
+	sw t0, 0(sp)
+	lw t0, 16(sp)
+	lw t1, 0(sp)
+	bge t0, t1, ._0_then
+# 3~3
+	lw t0, 32(sp)
+	sw t0, 0(tp)
+	lw t0, 16(sp)
+	sw t0, 4(tp)
+	sw tp, 8(sp)
+	addi tp, tp, 8
+	lw a0, 8(sp)
+	addi sp, sp, 52
+	ret
+	beq zero, zero, ._0_final
+._0_then:
+# 4~4
+	addi t0, zero, 57
+	sw t0, 48(sp)
+	lw t0, 48(sp)
+	lw t1, 16(sp)
+	bge t0, t1, ._1_then
+# 4~4
+	lw t0, 32(sp)
+	sw t0, 0(tp)
+	lw t0, 16(sp)
+	sw t0, 4(tp)
+	sw tp, 8(sp)
+	addi tp, tp, 8
+	lw a0, 8(sp)
+	addi sp, sp, 52
+	ret
+	beq zero, zero, ._1_final
+._1_then:
+# 5~5
+	lw t0, 32(sp)
+	slli t2, t0, 1
+	sw t2, 44(sp)
+# 5~5
+	lw t0, 32(sp)
+	slli t2, t0, 3
+	sw t2, 20(sp)
+# 5~5
+	lw t0, 44(sp)
+	lw t1, 20(sp)
+	add t2, t0, t1
+	sw t2, 24(sp)
+# 5~5
+	addi t0, zero, 48
+	sw t0, 28(sp)
+# 5~5
+	lw t0, 16(sp)
+	addi t2, t0, -48
+	sw t2, 36(sp)
+# 5~5
+	lw t0, 24(sp)
+	lw t1, 36(sp)
+	add t2, t0, t1
+	sw t2, 4(sp)
+# 5~5
+	sw ra, -4(sp)
+	lw a0, 4(sp)
+	addi sp, sp, -4
+	jal ra, read_num.90
+	addi sp, sp, 4
+	lw ra, -4(sp)
+	sw a0, 8(sp)
+	lw a0, 8(sp)
+	addi sp, sp, 52
+	ret
+._1_final:
+._0_final:
+read_isub.92:
+	addi sp, sp, -84
+	sw a0, 48(sp)
+# 0~0
+# 8~8
+	sw ra, -4(sp)
+	lw a0, 52(sp)
+	addi sp, sp, -4
+	jal ra, min_caml_read_byte
+	addi sp, sp, 4
+	lw ra, -4(sp)
+	sw a0, 56(sp)
+# 9~9
+	addi t0, zero, 32
+	sw t0, 72(sp)
+	lw t0, 56(sp)
+	lw t1, 72(sp)
+	beq t0, t1, ._2_then
+# 10~10
+	addi t0, zero, 10
+	sw t0, 20(sp)
+	lw t0, 56(sp)
+	lw t1, 20(sp)
+	beq t0, t1, ._3_then
+# 11~11
+	addi t0, zero, 45
+	sw t0, 8(sp)
+	lw t0, 56(sp)
+	lw t1, 8(sp)
+	beq t0, t1, ._4_then
+# 13~13
+	addi t0, zero, 48
+	sw t0, 24(sp)
+	lw t0, 56(sp)
+	lw t1, 24(sp)
+	bge t0, t1, ._5_then
+# 13~13
+	addi t0, zero, 0
+	sw t0, 28(sp)
+# 13~13
+	lw t0, 28(sp)
+	sw t0, 0(tp)
+	lw t0, 56(sp)
+	sw t0, 4(tp)
+	sw tp, 80(sp)
+	addi tp, tp, 8
+	lw a0, 80(sp)
+	addi sp, sp, 84
+	ret
+	beq zero, zero, ._5_final
+._5_then:
+# 14~14
+	addi t0, zero, 57
+	sw t0, 12(sp)
+	lw t0, 12(sp)
+	lw t1, 56(sp)
+	bge t0, t1, ._6_then
+# 14~14
+	addi t0, zero, 0
+	sw t0, 16(sp)
+# 14~14
+	lw t0, 16(sp)
+	sw t0, 0(tp)
+	lw t0, 56(sp)
+	sw t0, 4(tp)
+	sw tp, 80(sp)
+	addi tp, tp, 8
+	lw a0, 80(sp)
+	addi sp, sp, 84
+	ret
+	beq zero, zero, ._6_final
+._6_then:
+# 15~15
+	addi t0, zero, 48
+	sw t0, 36(sp)
+# 15~15
+	lw t0, 56(sp)
+	addi t2, t0, -48
+	sw t2, 68(sp)
+# 15~15
+	sw ra, -4(sp)
+	lw a0, 68(sp)
+	addi sp, sp, -4
+	jal ra, read_num.90
+	addi sp, sp, 4
+	lw ra, -4(sp)
+	sw a0, 80(sp)
+	lw a0, 80(sp)
+	addi sp, sp, 84
+	ret
+._6_final:
+._5_final:
+	beq zero, zero, ._4_final
+._4_then:
+# 12~12
+	addi t0, zero, 0
+	sw t0, 0(sp)
+# 12~12
+	sw ra, -4(sp)
+	lw a0, 0(sp)
+	addi sp, sp, -4
+	jal ra, read_num.90
+	addi sp, sp, 4
+	lw ra, -4(sp)
+	sw a0, 76(sp)
+# 12~12
+	lw t0, 76(sp)
+	lw t2, 0(t0)
+	sw t2, 32(sp)
+# 12~12
+	lw t0, 76(sp)
+	lw t2, 4(t0)
+	sw t2, 60(sp)
+# 12~12
+	lw t0, 32(sp)
+	sub t2, zero, t0
+	sw t2, 64(sp)
+# 12~12
+	lw t0, 64(sp)
+	sw t0, 0(tp)
+	lw t0, 60(sp)
+	sw t0, 4(tp)
+	sw tp, 80(sp)
+	addi tp, tp, 8
+	lw a0, 80(sp)
+	addi sp, sp, 84
+	ret
+._4_final:
+	beq zero, zero, ._3_final
+._3_then:
+# 0~0
+# 10~10
+	sw ra, -4(sp)
+	lw a0, 44(sp)
+	addi sp, sp, -4
+	jal ra, read_isub.92
+	addi sp, sp, 4
+	lw ra, -4(sp)
+	sw a0, 80(sp)
+	lw a0, 80(sp)
+	addi sp, sp, 84
+	ret
+._3_final:
+	beq zero, zero, ._2_final
+._2_then:
+# 0~0
+# 9~9
+	sw ra, -4(sp)
+	lw a0, 4(sp)
+	addi sp, sp, -4
+	jal ra, read_isub.92
+	addi sp, sp, 4
+	lw ra, -4(sp)
+	sw a0, 80(sp)
+	lw a0, 80(sp)
+	addi sp, sp, 84
+	ret
+._2_final:
+min_caml_read_int:
+	addi sp, sp, -24
+	sw a0, 20(sp)
+# 0~0
+# 18~18
+	sw ra, -4(sp)
+	lw a0, 12(sp)
+	addi sp, sp, -4
+	jal ra, read_isub.92
+	addi sp, sp, 4
+	lw ra, -4(sp)
+	sw a0, 8(sp)
+# 18~18
+	lw t0, 8(sp)
+	lw t2, 0(t0)
+	sw t2, 16(sp)
+# 18~18
+	lw t0, 8(sp)
+	lw t2, 4(t0)
+	sw t2, 0(sp)
+	lw a0, 16(sp)
+	addi sp, sp, 24
+	ret
+smallen.156:
+	addi sp, sp, -28
+	fsw fa0, 4(sp)
+# 30~30
+	la t0, .f1.000000f
+	flw ft0, 0(t0)
+	fsw ft0, 24(sp)
+# 30~30
+	flw ft0, 24(sp)
+	flw ft1, 4(sp)
+	fle t2, ft0, ft1
+	sw t2, 20(sp)
+	lw t0, 20(sp)
+	bne t0, zero, ._7_then
+	flw fa0, 4(sp)
+	addi sp, sp, 28
+	ret
+	beq zero, zero, ._7_final
+._7_then:
+# 30~30
+	la t0, .f10.000000f
+	flw ft0, 0(t0)
+	fsw ft0, 12(sp)
+# 30~30
+	flw ft0, 4(sp)
+	flw ft1, 12(sp)
+	fdiv ft2, ft0, ft1
+	fsw ft2, 16(sp)
+# 30~30
+	sw ra, -4(sp)
+	flw fa0, 16(sp)
+	addi sp, sp, -4
+	jal ra, smallen.156
+	addi sp, sp, 4
+	lw ra, -4(sp)
+	fsw fa0, 0(sp)
+	flw fa0, 0(sp)
+	addi sp, sp, 28
+	ret
+._7_final:
+min_caml_read_float:
+	addi sp, sp, -108
+	sw a0, 28(sp)
+# 0~0
+# 21~21
+	sw ra, -4(sp)
+	lw a0, 104(sp)
+	addi sp, sp, -4
+	jal ra, min_caml_read_byte
+	addi sp, sp, 4
+	lw ra, -4(sp)
+	sw a0, 36(sp)
+# 22~22
+	addi t0, zero, 32
+	sw t0, 32(sp)
+	lw t0, 36(sp)
+	lw t1, 32(sp)
+	beq t0, t1, ._8_then
+# 23~23
+	addi t0, zero, 10
+	sw t0, 88(sp)
+	lw t0, 36(sp)
+	lw t1, 88(sp)
+	beq t0, t1, ._9_then
+# 24~24
+	addi t0, zero, 45
+	sw t0, 64(sp)
+	lw t0, 36(sp)
+	lw t1, 64(sp)
+	beq t0, t1, ._10_then
+# 25~25
+	addi t0, zero, 48
+	sw t0, 56(sp)
+	lw t0, 36(sp)
+	lw t1, 56(sp)
+	bge t0, t1, ._11_then
+# 25~25
+	la t0, .f0.000000f
+	flw ft0, 0(t0)
+	fsw ft0, 20(sp)
+	flw fa0, 20(sp)
+	addi sp, sp, 108
+	ret
+	beq zero, zero, ._11_final
+._11_then:
+# 26~26
+	addi t0, zero, 57
+	sw t0, 60(sp)
+	lw t0, 60(sp)
+	lw t1, 36(sp)
+	bge t0, t1, ._12_then
+# 26~26
+	la t0, .f0.000000f
+	flw ft0, 0(t0)
+	fsw ft0, 20(sp)
+	flw fa0, 20(sp)
+	addi sp, sp, 108
+	ret
+	beq zero, zero, ._12_final
+._12_then:
+# 27~27
+	addi t0, zero, 48
+	sw t0, 96(sp)
+# 27~27
+	lw t0, 36(sp)
+	addi t2, t0, -48
+	sw t2, 0(sp)
+# 27~27
+	sw ra, -4(sp)
+	lw a0, 0(sp)
+	addi sp, sp, -4
+	jal ra, read_num.90
+	addi sp, sp, 4
+	lw ra, -4(sp)
+	sw a0, 40(sp)
+# 27~32
+	lw t0, 40(sp)
+	lw t2, 0(t0)
+	sw t2, 4(sp)
+# 27~32
+	lw t0, 40(sp)
+	lw t2, 4(t0)
+	sw t2, 92(sp)
+# 28~28
+	addi t0, zero, 46
+	sw t0, 48(sp)
+	lw t0, 92(sp)
+	lw t1, 48(sp)
+	beq t0, t1, ._13_then
+# 32~32
+	sw ra, -4(sp)
+	lw a0, 4(sp)
+	addi sp, sp, -4
+	jal ra, min_caml_float_of_int
+	addi sp, sp, 4
+	lw ra, -4(sp)
+	fsw fa0, 20(sp)
+	flw fa0, 20(sp)
+	addi sp, sp, 108
+	ret
+	beq zero, zero, ._13_final
+._13_then:
+# 29~29
+	addi t0, zero, 0
+	sw t0, 12(sp)
+# 29~29
+	sw ra, -4(sp)
+	lw a0, 12(sp)
+	addi sp, sp, -4
+	jal ra, read_num.90
+	addi sp, sp, 4
+	lw ra, -4(sp)
+	sw a0, 44(sp)
+# 29~31
+	lw t0, 44(sp)
+	lw t2, 0(t0)
+	sw t2, 68(sp)
+# 29~31
+	lw t0, 44(sp)
+	lw t2, 4(t0)
+	sw t2, 52(sp)
+# 31~31
+	sw ra, -4(sp)
+	lw a0, 4(sp)
+	addi sp, sp, -4
+	jal ra, min_caml_float_of_int
+	addi sp, sp, 4
+	lw ra, -4(sp)
+	fsw fa0, 72(sp)
+# 31~31
+	sw ra, -4(sp)
+	lw a0, 68(sp)
+	addi sp, sp, -4
+	jal ra, min_caml_float_of_int
+	addi sp, sp, 4
+	lw ra, -4(sp)
+	fsw fa0, 76(sp)
+# 31~31
+	sw ra, -4(sp)
+	flw fa0, 76(sp)
+	addi sp, sp, -4
+	jal ra, smallen.156
+	addi sp, sp, 4
+	lw ra, -4(sp)
+	fsw fa0, 100(sp)
+# 31~31
+	flw ft0, 72(sp)
+	flw ft1, 100(sp)
+	fadd ft2, ft0, ft1
+	fsw ft2, 20(sp)
+	flw fa0, 20(sp)
+	addi sp, sp, 108
+	ret
+._13_final:
+._12_final:
+._11_final:
+	beq zero, zero, ._10_final
+._10_then:
+# 0~0
+# 24~24
+	sw ra, -4(sp)
+	lw a0, 8(sp)
+	addi sp, sp, -4
+	jal ra, min_caml_read_float
+	addi sp, sp, 4
+	lw ra, -4(sp)
+	fsw fa0, 80(sp)
+# 24~24
+	flw ft0, 80(sp)
+	fneg ft2, ft0
+	fsw ft2, 20(sp)
+	flw fa0, 20(sp)
+	addi sp, sp, 108
+	ret
+._10_final:
+	beq zero, zero, ._9_final
+._9_then:
+# 0~0
+# 23~23
+	sw ra, -4(sp)
+	lw a0, 84(sp)
+	addi sp, sp, -4
+	jal ra, min_caml_read_float
+	addi sp, sp, 4
+	lw ra, -4(sp)
+	fsw fa0, 20(sp)
+	flw fa0, 20(sp)
+	addi sp, sp, 108
+	ret
+._9_final:
+	beq zero, zero, ._8_final
+._8_then:
+# 0~0
+# 22~22
+	sw ra, -4(sp)
+	lw a0, 16(sp)
+	addi sp, sp, -4
+	jal ra, min_caml_read_float
+	addi sp, sp, 4
+	lw ra, -4(sp)
+	fsw fa0, 20(sp)
+	flw fa0, 20(sp)
+	addi sp, sp, 108
+	ret
+._8_final:
+print_num.98:
+	addi sp, sp, -72
+	fsw fa0, 8(sp)
+# 35~35
+	la t0, .f9.500000f
+	flw ft0, 0(t0)
+	fsw ft0, 16(sp)
+# 35~35
+	flw ft0, 16(sp)
+	flw ft1, 8(sp)
+	fle t2, ft0, ft1
+	sw t2, 40(sp)
+	lw t0, 40(sp)
+	bne t0, zero, ._14_then
+# 35~35
+	sw ra, -4(sp)
+	flw fa0, 8(sp)
+	addi sp, sp, -4
+	jal ra, min_caml_int_of_float
+	addi sp, sp, 4
+	lw ra, -4(sp)
+	sw a0, 56(sp)
+# 35~35
+	addi t0, zero, 48
+	sw t0, 4(sp)
+# 35~35
+	lw t0, 56(sp)
+	addi t2, t0, 48
+	sw t2, 60(sp)
+# 35~35
+	sw ra, -4(sp)
+	lw a0, 60(sp)
+	addi sp, sp, -4
+	jal ra, min_caml_print_byte
+	addi sp, sp, 4
+	lw ra, -4(sp)
+	sw a0, 0(sp)
+	lw a0, 0(sp)
+	addi sp, sp, 72
+	ret
+	beq zero, zero, ._14_final
+._14_then:
+# 36~36
+	la t0, .f0.100000f
+	flw ft0, 0(t0)
+	fsw ft0, 64(sp)
+# 36~36
+	flw ft0, 8(sp)
+	flw ft1, 64(sp)
+	fmul ft2, ft0, ft1
+	fsw ft2, 44(sp)
+# 36~36
+	sw ra, -4(sp)
+	flw fa0, 44(sp)
+	addi sp, sp, -4
+	jal ra, min_caml_floor
+	addi sp, sp, 4
+	lw ra, -4(sp)
+	fsw fa0, 12(sp)
+# 37~37
+	la t0, .f10.000000f
+	flw ft0, 0(t0)
+	fsw ft0, 20(sp)
+# 37~37
+	flw ft0, 12(sp)
+	flw ft1, 20(sp)
+	fmul ft2, ft0, ft1
+	fsw ft2, 36(sp)
+# 37~37
+	flw ft0, 8(sp)
+	flw ft1, 36(sp)
+	fsub ft2, ft0, ft1
+	fsw ft2, 24(sp)
+# 37~37
+	sw ra, -4(sp)
+	flw fa0, 24(sp)
+	addi sp, sp, -4
+	jal ra, min_caml_int_of_float
+	addi sp, sp, 4
+	lw ra, -4(sp)
+	sw a0, 68(sp)
+# 38~38
+	sw ra, -4(sp)
+	flw fa0, 12(sp)
+	addi sp, sp, -4
+	jal ra, print_num.98
+	addi sp, sp, 4
+	lw ra, -4(sp)
+	sw a0, 52(sp)
+# 39~39
+	addi t0, zero, 48
+	sw t0, 32(sp)
+# 39~39
+	lw t0, 68(sp)
+	addi t2, t0, 48
+	sw t2, 28(sp)
+# 39~39
+	sw ra, -4(sp)
+	lw a0, 28(sp)
+	addi sp, sp, -4
+	jal ra, min_caml_print_byte
+	addi sp, sp, 4
+	lw ra, -4(sp)
+	sw a0, 0(sp)
+	lw a0, 0(sp)
+	addi sp, sp, 72
+	ret
+._14_final:
+min_caml_print_int:
+	addi sp, sp, -36
+	sw a0, 20(sp)
+# 42~42
+	addi t0, zero, 0
+	sw t0, 12(sp)
+	lw t0, 20(sp)
+	lw t1, 12(sp)
+	bge t0, t1, ._15_then
+# 42~42
+	addi t0, zero, 45
+	sw t0, 0(sp)
+# 42~42
+	sw ra, -4(sp)
+	lw a0, 0(sp)
+	addi sp, sp, -4
+	jal ra, min_caml_print_byte
+	addi sp, sp, 4
+	lw ra, -4(sp)
+	sw a0, 16(sp)
+# 42~42
+	lw t0, 20(sp)
+	sub t2, zero, t0
+	sw t2, 4(sp)
+# 42~42
+	sw ra, -4(sp)
+	lw a0, 4(sp)
+	addi sp, sp, -4
+	jal ra, min_caml_float_of_int
+	addi sp, sp, 4
+	lw ra, -4(sp)
+	fsw fa0, 32(sp)
+# 42~42
+	sw ra, -4(sp)
+	flw fa0, 32(sp)
+	addi sp, sp, -4
+	jal ra, print_num.98
+	addi sp, sp, 4
+	lw ra, -4(sp)
+	sw a0, 8(sp)
+	lw a0, 8(sp)
+	addi sp, sp, 36
+	ret
+	beq zero, zero, ._15_final
+._15_then:
+# 43~43
+	sw ra, -4(sp)
+	lw a0, 20(sp)
+	addi sp, sp, -4
+	jal ra, min_caml_float_of_int
+	addi sp, sp, 4
+	lw ra, -4(sp)
+	fsw fa0, 24(sp)
+# 43~43
+	sw ra, -4(sp)
+	flw fa0, 24(sp)
+	addi sp, sp, -4
+	jal ra, print_num.98
+	addi sp, sp, 4
+	lw ra, -4(sp)
+	sw a0, 8(sp)
+	lw a0, 8(sp)
+	addi sp, sp, 36
+	ret
+._15_final:
+min_caml_print_float:
+	addi sp, sp, -72
+	fsw fa0, 68(sp)
+# 46~46
+	la t0, .f0.000000f
+	flw ft0, 0(t0)
+	fsw ft0, 0(sp)
+# 46~46
+	flw ft0, 0(sp)
+	flw ft1, 68(sp)
+	fle t2, ft0, ft1
+	sw t2, 32(sp)
+	lw t0, 32(sp)
+	bne t0, zero, ._16_then
+# 47~47
+	addi t0, zero, 45
+	sw t0, 44(sp)
+# 47~47
+	sw ra, -4(sp)
+	lw a0, 44(sp)
+	addi sp, sp, -4
+	jal ra, min_caml_print_byte
+	addi sp, sp, 4
+	lw ra, -4(sp)
+	sw a0, 64(sp)
+# 47~47
+	flw ft0, 68(sp)
+	fneg ft2, ft0
+	fsw ft2, 56(sp)
+# 47~47
+	sw ra, -4(sp)
+	flw fa0, 56(sp)
+	addi sp, sp, -4
+	jal ra, min_caml_print_float
+	addi sp, sp, 4
+	lw ra, -4(sp)
+	sw a0, 52(sp)
+	lw a0, 52(sp)
+	addi sp, sp, 72
+	ret
+	beq zero, zero, ._16_final
+._16_then:
+# 48~48
+	sw ra, -4(sp)
+	flw fa0, 68(sp)
+	addi sp, sp, -4
+	jal ra, min_caml_floor
+	addi sp, sp, 4
+	lw ra, -4(sp)
+	fsw fa0, 36(sp)
+# 48~48
+	sw ra, -4(sp)
+	flw fa0, 36(sp)
+	addi sp, sp, -4
+	jal ra, print_num.98
+	addi sp, sp, 4
+	lw ra, -4(sp)
+	sw a0, 12(sp)
+# 49~49
+	addi t0, zero, 46
+	sw t0, 40(sp)
+# 49~49
+	sw ra, -4(sp)
+	lw a0, 40(sp)
+	addi sp, sp, -4
+	jal ra, min_caml_print_byte
+	addi sp, sp, 4
+	lw ra, -4(sp)
+	sw a0, 28(sp)
+# 50~50
+	sw ra, -4(sp)
+	flw fa0, 68(sp)
+	addi sp, sp, -4
+	jal ra, min_caml_floor
+	addi sp, sp, 4
+	lw ra, -4(sp)
+	fsw fa0, 4(sp)
+# 50~50
+	flw ft0, 68(sp)
+	flw ft1, 4(sp)
+	fsub ft2, ft0, ft1
+	fsw ft2, 16(sp)
+# 51~51
+	la t0, .f1000000.000000f
+	flw ft0, 0(t0)
+	fsw ft0, 8(sp)
+# 51~51
+	flw ft0, 16(sp)
+	flw ft1, 8(sp)
+	fmul ft2, ft0, ft1
+	fsw ft2, 48(sp)
+# 51~51
+	sw ra, -4(sp)
+	flw fa0, 48(sp)
+	addi sp, sp, -4
+	jal ra, min_caml_int_of_float
+	addi sp, sp, 4
+	lw ra, -4(sp)
+	sw a0, 20(sp)
+# 51~51
+	sw ra, -4(sp)
+	lw a0, 20(sp)
+	addi sp, sp, -4
+	jal ra, min_caml_float_of_int
+	addi sp, sp, 4
+	lw ra, -4(sp)
+	fsw fa0, 24(sp)
+# 51~51
+	sw ra, -4(sp)
+	flw fa0, 24(sp)
+	addi sp, sp, -4
+	jal ra, print_num.98
+	addi sp, sp, 4
+	lw ra, -4(sp)
+	sw a0, 52(sp)
+	lw a0, 52(sp)
+	addi sp, sp, 72
+	ret
+._16_final:
+.data
+.f10.000000f:
+	.word 1092616192
+.f9.500000f:
+	.word 1092091904
+.f1.000000f:
+	.word 1065353216
+.f0.100000f:
+	.word 1036831949
+.f1000000.000000f:
+	.word 1232348160
+.f0.000000f:
+	.word 0

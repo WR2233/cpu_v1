@@ -1,0 +1,66 @@
+min_caml_floor:
+	floor fa0, fa0
+	ret
+min_caml_float_of_int:
+	itof fa0, a0
+	ret
+min_caml_int_of_float:
+min_caml_truncate:
+	ftoi a0, fa0
+	ret
+min_caml_sqrt: 
+    fsqrt fa0, fa0
+    ret
+
+min_caml_fequal:
+	feq a0, fa0, fa1
+	ret
+min_caml_fless:
+	flt a0, fa0, fa1
+	ret
+min_caml_fispos:
+	la t0, .fzero
+	flw ft0, 0(t0)
+	flt a0, ft0, fa0
+	ret
+min_caml_fisneg:
+	la t0, .fzero
+	flw ft0, 0(t0)
+	flt a0, fa0, ft0
+	ret
+min_caml_fiszero:
+	la t0, .fzero
+	flw ft0, 0(t0)
+	feq a0, ft0, fa0
+	ret
+min_caml_xor:
+	beq a0, a1, .ret_0
+	addi a0, zero, 1
+	ret
+.ret_0:
+	add a0, zero, zero
+	ret
+min_caml_not:
+	addi t0, zero, 1
+	sub a0, t0, a0
+	ret
+min_caml_fhalf:
+	la t0, .half
+	flw ft0, 0(t0)
+	fmul fa0, fa0, fa1
+	ret
+min_caml_fsqr:
+	fmul fa0, fa0, fa0
+	ret
+min_caml_fabs:
+min_caml_abs_float:
+    fabs fa0, fa0
+    ret
+min_caml_fneg:
+    fneg fa0, fa0
+    ret
+.data
+.fzero:
+	.word 0
+.half:
+	.word 0x3f000000

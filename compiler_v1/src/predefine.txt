@@ -1,0 +1,80 @@
+min_caml_print_int i u
+            Type::Func(vec![Type::Int], Box::new(Type::Unit)),
+        fnty.insert(
+            "min_caml_print_byte".to_string(),
+            Type::Func(vec![Type::Int], Box::new(Type::Unit)),
+        );
+        fnty.insert(
+            "min_caml_print_float".to_string(),
+            Type::Func(vec![Type::Float], Box::new(Type::Unit)),
+        );
+        fnty.insert(
+            "min_caml_print_newline".to_string(),
+            Type::Func(vec![Type::Unit], Box::new(Type::Unit)),
+        );
+        fnty.insert(
+            "min_caml_read_int".to_string(),
+            Type::Func(vec![Type::Unit], Box::new(Type::Int)),
+        );
+        fnty.insert(
+            "min_caml_read_float".to_string(),
+            Type::Func(vec![Type::Unit], Box::new(Type::Float)),
+        );
+        fnty.insert(
+            "min_caml_read_byte".to_string(),
+            Type::Func(vec![Type::Unit], Box::new(Type::Int)),
+        );
+        fnty.insert(
+            "min_caml_truncate".to_string(),
+            Type::Func(vec![Type::Float], Box::new(Type::Int)),
+        );
+        fnty.insert(
+            "min_caml_create_array".to_string(),
+            Type::Func(
+                vec![Type::Int, Type::Int],
+                Box::new(Type::Array(Box::new(Type::Int))),
+            ),
+        );
+        fnty.insert(
+            "min_caml_create_float_array".to_string(),
+            Type::Func(
+                vec![Type::Int, Type::Float],
+                Box::new(Type::Array(Box::new(Type::Float))),
+            ),
+        );
+        fnty.insert(
+            "min_caml_sin".to_string(),
+            Type::Func(vec![Type::Float], Box::new(Type::Float)),
+        );
+        fnty.insert(
+            "min_caml_cos".to_string(),
+            Type::Func(vec![Type::Float], Box::new(Type::Float)),
+        );
+        fnty.insert(
+            "min_caml_tan".to_string(),
+            Type::Func(vec![Type::Float], Box::new(Type::Float)),
+        );
+        fnty.insert(
+            "min_caml_atan".to_string(),
+            Type::Func(vec![Type::Float], Box::new(Type::Float)),
+        );
+        fnty.insert(
+            "min_caml_abs_float".to_string(),
+            Type::Func(vec![Type::Float], Box::new(Type::Float)),
+        );
+        fnty.insert(
+            "min_caml_floor".to_string(),
+            Type::Func(vec![Type::Float], Box::new(Type::Float)),
+        );
+        fnty.insert(
+            "min_caml_sqrt".to_string(),
+            Type::Func(vec![Type::Float], Box::new(Type::Float)),
+        );
+        fnty.insert(
+            "min_caml_float_of_int".to_string(),
+            Type::Func(vec![Type::Int], Box::new(Type::Float)),
+        );
+        fnty.insert(
+            "min_caml_int_of_float".to_string(),
+            Type::Func(vec![Type::Float], Box::new(Type::Int)),
+        );

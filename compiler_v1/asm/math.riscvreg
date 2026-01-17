@@ -1,0 +1,443 @@
+loop.234:
+	addi sp, sp, -12
+	fle t0, fa1, fa0
+	bne t0, zero, ._0_then
+	fsgnj fa0, fa1, fa1
+	addi sp, sp, 12
+	ret
+	beq zero, zero, ._0_final
+._0_then:
+	la s10, .f2.000000f
+	flw ft0, 0(s10)
+	fmul ft0, fa1, ft0
+	sw s9, 4(sp)
+	fsgnj fa1, ft0, ft0
+	sw ra, 0(sp)
+	jal ra, loop.234
+	lw ra, 0(sp)
+	lw s9, 4(sp)
+	addi sp, sp, 12
+	ret
+._0_final:
+loop2.238:
+	addi sp, sp, -12
+	la s10, .f6.283185f
+	flw ft0, 0(s10)
+	fle t0, ft0, fa0
+	bne t0, zero, ._1_then
+	addi sp, sp, 12
+	ret
+	beq zero, zero, ._1_final
+._1_then:
+	fle t0, fa1, fa0
+	bne t0, zero, ._2_then
+	fsgnj ft0, fa0, fa0
+	beq zero, zero, ._2_final
+._2_then:
+	fsub ft0, fa0, fa1
+._2_final:
+	la s10, .f2.000000f
+	flw ft1, 0(s10)
+	fdiv ft1, fa1, ft1
+	sw s9, 4(sp)
+	fsgnj fa0, ft0, ft0
+	fsgnj fa1, ft1, ft1
+	sw ra, 0(sp)
+	jal ra, loop2.238
+	lw ra, 0(sp)
+	lw s9, 4(sp)
+	addi sp, sp, 12
+	ret
+._1_final:
+red2pi.88:
+	addi sp, sp, -16
+	la s10, .f6.283185f
+	flw ft0, 0(s10)
+	fsw fa0, 8(sp)
+	sw s9, 4(sp)
+	fsgnj fa1, ft0, ft0
+	sw ra, 0(sp)
+	jal ra, loop.234
+	lw ra, 0(sp)
+	lw s9, 4(sp)
+	sw s9, 4(sp)
+	fsgnj fa1, fa0, fa0
+	flw fa0, 8(sp)
+	sw ra, 0(sp)
+	jal ra, loop2.238
+	lw ra, 0(sp)
+	lw s9, 4(sp)
+	addi sp, sp, 16
+	ret
+addflag.90:
+	addi sp, sp, -12
+	addi t0, zero, 0
+	beq a0, t0, ._3_then
+	addi sp, sp, 12
+	ret
+	beq zero, zero, ._3_final
+._3_then:
+	fneg ft0, fa0
+	fsgnj fa0, ft0, ft0
+	addi sp, sp, 12
+	ret
+._3_final:
+kernel_sin.93:
+	addi sp, sp, -12
+	la s10, .f-0.166660f
+	flw ft0, 0(s10)
+	la s10, .f0.008333f
+	flw ft1, 0(s10)
+	la s10, .f-0.000196f
+	flw ft2, 0(s10)
+	fmul ft3, fa0, fa0
+	fmul ft4, fa0, ft3
+	fmul ft5, ft4, ft3
+	fmul ft3, ft5, ft3
+	fmul ft0, ft0, ft4
+	fadd ft0, fa0, ft0
+	fmul ft1, ft1, ft5
+	fadd ft0, ft0, ft1
+	fmul ft1, ft2, ft3
+	fadd ft0, ft0, ft1
+	fsgnj fa0, ft0, ft0
+	addi sp, sp, 12
+	ret
+kernel_cos.95:
+	addi sp, sp, -12
+	la s10, .f1.000000f
+	flw ft0, 0(s10)
+	la s10, .f-0.500000f
+	flw ft1, 0(s10)
+	la s10, .f0.041660f
+	flw ft2, 0(s10)
+	la s10, .f-0.001369f
+	flw ft3, 0(s10)
+	fmul ft4, fa0, fa0
+	fmul ft5, ft4, ft4
+	fmul ft6, ft5, ft4
+	fmul ft1, ft1, ft4
+	fadd ft0, ft0, ft1
+	fmul ft1, ft2, ft5
+	fadd ft0, ft0, ft1
+	fmul ft1, ft3, ft6
+	fadd ft0, ft0, ft1
+	fsgnj fa0, ft0, ft0
+	addi sp, sp, 12
+	ret
+min_caml_sin:
+	addi sp, sp, -24
+	la s10, .f3.141593f
+	flw ft0, 0(s10)
+	la s10, .f0.000000f
+	flw ft1, 0(s10)
+	fle t0, ft1, fa0
+	bne t0, zero, ._4_then
+	addi t0, zero, 0
+	fneg ft1, fa0
+	sw t0, 0(tp)
+	fsw ft1, 4(tp)
+	add t0, zero, tp
+	addi tp, tp, 8
+	beq zero, zero, ._4_final
+._4_then:
+	addi t0, zero, 1
+	sw t0, 0(tp)
+	fsw fa0, 4(tp)
+	add t0, zero, tp
+	addi tp, tp, 8
+._4_final:
+	lw t1, 0(t0)
+	flw ft1, 4(t0)
+	sw t1, 8(sp)
+	fsw ft0, 12(sp)
+	sw s9, 4(sp)
+	fsgnj fa0, ft1, ft1
+	sw ra, 0(sp)
+	jal ra, red2pi.88
+	lw ra, 0(sp)
+	lw s9, 4(sp)
+	flw ft0, 12(sp)
+	fle t0, ft0, fa0
+	bne t0, zero, ._5_then
+	lw s10, 8(sp)
+	sw s10, 0(tp)
+	fsw fa0, 4(tp)
+	add t0, zero, tp
+	addi tp, tp, 8
+	beq zero, zero, ._5_final
+._5_then:
+	addi t0, zero, 0
+	lw t1, 8(sp)
+	beq t1, t0, ._6_then
+	addi t0, zero, 0
+	beq zero, zero, ._6_final
+._6_then:
+	addi t0, zero, 1
+._6_final:
+	fsub ft1, fa0, ft0
+	sw t0, 0(tp)
+	fsw ft1, 4(tp)
+	add t0, zero, tp
+	addi tp, tp, 8
+._5_final:
+	lw t1, 0(t0)
+	flw ft1, 4(t0)
+	la s10, .f1.570796f
+	flw ft2, 0(s10)
+	fle t0, ft2, ft1
+	bne t0, zero, ._7_then
+	beq zero, zero, ._7_final
+._7_then:
+	fsub ft0, ft0, ft1
+	fsgnj ft1, ft0, ft0
+._7_final:
+	la s10, .f0.785398f
+	flw ft2, 0(s10)
+	fle t0, ft1, ft2
+	bne t0, zero, ._8_then
+	la s10, .f1.570796f
+	flw ft2, 0(s10)
+	fsub ft1, ft2, ft1
+	sw t1, 16(sp)
+	fsw ft0, 12(sp)
+	sw s9, 4(sp)
+	fsgnj fa0, ft1, ft1
+	sw ra, 0(sp)
+	jal ra, kernel_cos.95
+	lw ra, 0(sp)
+	lw s9, 4(sp)
+	beq zero, zero, ._8_final
+._8_then:
+	sw t1, 16(sp)
+	fsw ft0, 12(sp)
+	sw s9, 4(sp)
+	fsgnj fa0, ft1, ft1
+	sw ra, 0(sp)
+	jal ra, kernel_sin.93
+	lw ra, 0(sp)
+	lw s9, 4(sp)
+._8_final:
+	sw s9, 4(sp)
+	lw a0, 16(sp)
+	sw ra, 0(sp)
+	jal ra, addflag.90
+	lw ra, 0(sp)
+	lw s9, 4(sp)
+	addi sp, sp, 24
+	ret
+min_caml_cos:
+	addi sp, sp, -20
+	la s10, .f3.141593f
+	flw ft0, 0(s10)
+	fsw ft0, 8(sp)
+	sw s9, 4(sp)
+	sw ra, 0(sp)
+	jal ra, min_caml_abs_float
+	lw ra, 0(sp)
+	lw s9, 4(sp)
+	sw s9, 4(sp)
+	sw ra, 0(sp)
+	jal ra, red2pi.88
+	lw ra, 0(sp)
+	lw s9, 4(sp)
+	flw ft0, 8(sp)
+	fle t0, ft0, fa0
+	bne t0, zero, ._9_then
+	addi t0, zero, 1
+	sw t0, 0(tp)
+	fsw fa0, 4(tp)
+	add t0, zero, tp
+	addi tp, tp, 8
+	beq zero, zero, ._9_final
+._9_then:
+	addi t0, zero, 0
+	fsub ft1, fa0, ft0
+	sw t0, 0(tp)
+	fsw ft1, 4(tp)
+	add t0, zero, tp
+	addi tp, tp, 8
+._9_final:
+	lw t1, 0(t0)
+	flw ft1, 4(t0)
+	la s10, .f1.570796f
+	flw ft2, 0(s10)
+	fle t0, ft2, ft1
+	bne t0, zero, ._10_then
+	sw t1, 0(tp)
+	fsw ft1, 4(tp)
+	add t0, zero, tp
+	addi tp, tp, 8
+	beq zero, zero, ._10_final
+._10_then:
+	addi t0, zero, 0
+	beq t1, t0, ._11_then
+	addi t0, zero, 0
+	beq zero, zero, ._11_final
+._11_then:
+	addi t0, zero, 1
+._11_final:
+	fsub ft0, ft0, ft1
+	sw t0, 0(tp)
+	fsw ft0, 4(tp)
+	add t0, zero, tp
+	addi tp, tp, 8
+._10_final:
+	lw t1, 0(t0)
+	flw ft1, 4(t0)
+	la s10, .f0.785398f
+	flw ft2, 0(s10)
+	fle t0, ft1, ft2
+	bne t0, zero, ._12_then
+	la s10, .f1.570796f
+	flw ft2, 0(s10)
+	fsub ft1, ft2, ft1
+	sw t1, 12(sp)
+	fsw ft0, 8(sp)
+	sw s9, 4(sp)
+	fsgnj fa0, ft1, ft1
+	sw ra, 0(sp)
+	jal ra, kernel_sin.93
+	lw ra, 0(sp)
+	lw s9, 4(sp)
+	beq zero, zero, ._12_final
+._12_then:
+	sw t1, 12(sp)
+	fsw ft0, 8(sp)
+	sw s9, 4(sp)
+	fsgnj fa0, ft1, ft1
+	sw ra, 0(sp)
+	jal ra, kernel_cos.95
+	lw ra, 0(sp)
+	lw s9, 4(sp)
+._12_final:
+	sw s9, 4(sp)
+	lw a0, 12(sp)
+	sw ra, 0(sp)
+	jal ra, addflag.90
+	lw ra, 0(sp)
+	lw s9, 4(sp)
+	addi sp, sp, 20
+	ret
+kernel_atan.101:
+	addi sp, sp, -12
+	la s10, .f-0.333333f
+	flw ft0, 0(s10)
+	la s10, .f0.200000f
+	flw ft1, 0(s10)
+	la s10, .f-0.142857f
+	flw ft2, 0(s10)
+	la s10, .f0.111111f
+	flw ft3, 0(s10)
+	la s10, .f-0.089764f
+	flw ft4, 0(s10)
+	la s10, .f0.060035f
+	flw ft5, 0(s10)
+	fmul ft6, fa0, fa0
+	fmul ft7, fa0, ft6
+	fmul fa1, ft7, ft6
+	fmul fa2, fa1, ft6
+	fmul fa3, fa2, ft6
+	fmul fa4, fa3, ft6
+	fmul ft6, fa4, ft6
+	fmul ft0, ft0, ft7
+	fadd ft0, fa0, ft0
+	fmul ft1, ft1, fa1
+	fadd ft0, ft0, ft1
+	fmul ft1, ft2, fa2
+	fadd ft0, ft0, ft1
+	fmul ft1, ft3, fa3
+	fadd ft0, ft0, ft1
+	fmul ft1, ft4, fa4
+	fadd ft0, ft0, ft1
+	fmul ft1, ft5, ft6
+	fadd ft0, ft0, ft1
+	fsgnj fa0, ft0, ft0
+	addi sp, sp, 12
+	ret
+min_caml_atan:
+	addi sp, sp, -20
+	la s10, .f0.000000f
+	flw ft0, 0(s10)
+	fle t0, ft0, fa0
+	bne t0, zero, ._13_then
+	addi t0, zero, 0
+	fneg ft0, fa0
+	sw t0, 0(tp)
+	fsw ft0, 4(tp)
+	add t0, zero, tp
+	addi tp, tp, 8
+	beq zero, zero, ._13_final
+._13_then:
+	addi t0, zero, 1
+	sw t0, 0(tp)
+	fsw fa0, 4(tp)
+	add t0, zero, tp
+	addi tp, tp, 8
+._13_final:
+	lw t1, 0(t0)
+	flw ft0, 4(t0)
+	la s10, .f0.437500f
+	flw ft1, 0(s10)
+	fle t0, ft1, ft0
+	bne t0, zero, ._14_then
+	sw t1, 8(sp)
+	sw s9, 4(sp)
+	fsgnj fa0, ft0, ft0
+	sw ra, 0(sp)
+	jal ra, kernel_atan.101
+	lw ra, 0(sp)
+	lw s9, 4(sp)
+	beq zero, zero, ._14_final
+._14_then:
+	la s10, .f2.437500f
+	flw ft1, 0(s10)
+	fle t0, ft1, ft0
+	bne t0, zero, ._15_then
+	la s10, .f0.785398f
+	flw ft1, 0(s10)
+	la s10, .f1.000000f
+	flw ft2, 0(s10)
+	fsub ft2, ft0, ft2
+	la s10, .f1.000000f
+	flw ft3, 0(s10)
+	fadd ft0, ft0, ft3
+	fdiv ft0, ft2, ft0
+	sw t1, 8(sp)
+	fsw ft1, 12(sp)
+	sw s9, 4(sp)
+	fsgnj fa0, ft0, ft0
+	sw ra, 0(sp)
+	jal ra, kernel_atan.101
+	lw ra, 0(sp)
+	lw s9, 4(sp)
+	flw ft0, 12(sp)
+	fadd ft0, ft0, fa0
+	beq zero, zero, ._15_final
+._15_then:
+	la s10, .f1.570796f
+	flw ft1, 0(s10)
+	la s10, .f1.000000f
+	flw ft2, 0(s10)
+	fdiv ft0, ft2, ft0
+	sw t1, 8(sp)
+	fsw ft1, 12(sp)
+	sw s9, 4(sp)
+	fsgnj fa0, ft0, ft0
+	sw ra, 0(sp)
+	jal ra, kernel_atan.101
+	lw ra, 0(sp)
+	lw s9, 4(sp)
+	flw ft0, 12(sp)
+	fsub ft0, ft0, fa0
+._15_final:
+	fsgnj fa0, ft0, ft0
+._14_final:
+	sw s9, 4(sp)
+	lw a0, 8(sp)
+	sw ra, 0(sp)
+	jal ra, addflag.90
+	lw ra, 0(sp)
+	lw s9, 4(sp)
+	addi sp, sp, 20
+	ret

@@ -1,0 +1,69 @@
+.data
+objects:
+	.zero	240
+size:
+	.zero	8
+dbg:
+	.zero	4
+screen:
+	.zero	24
+vp:
+	.zero	24
+view:
+	.zero	24
+light:
+	.zero	24
+cos_v:
+	.zero	16
+sin_v:
+	.zero	16
+beam:
+	.zero	8
+and_net:
+	.zero	200
+or_net:
+	.zero	4
+temp:
+	.zero	112
+cs_temp:
+	.zero	128
+solver_dist:
+	.zero	8
+vscan:
+	.zero	24
+intsec_rectside:
+	.zero	4
+tmin:
+	.zero	8
+crashed_point:
+	.zero	24
+crashed_object:
+	.zero	4
+end_flag:
+	.zero	4
+viewpoint:
+	.zero	24
+nvector:
+	.zero	24
+rgb:
+	.zero	24
+texture_color:
+	.zero	24
+solver_w_vec:
+	.zero	24
+chkinside_p:
+	.zero	24
+isoutside_q:
+	.zero	24
+nvector_w:
+	.zero	24
+scan_d:
+	.zero	8
+scan_offset:
+	.zero	8
+scan_sscany:
+	.zero	8
+scan_met1:
+	.zero	8
+wscan:
+	.zero	24
