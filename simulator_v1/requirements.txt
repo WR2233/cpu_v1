@@ -1,0 +1,7 @@
+# RISC-V Assembler and Simulator Dependencies
+
+# NumPy - Used for register arrays and floating-point operations
+numpy==1.26.4
+
+# No other external dependencies required
+# The project uses only Python standard library features otherwise
