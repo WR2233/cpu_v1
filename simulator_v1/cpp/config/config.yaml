@@ -1,0 +1,5 @@
+registers:
+  2: 0x40018000
+  3: 0xffff0000
+  4: 0x1000
+input_sld_file: ../../cpuex-v1.6/raytracer/sld/contest.sld

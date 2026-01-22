@@ -729,21 +729,7 @@ def link_files(input_files, output=None, format='hex', assemble_output=None, pc_
     Returns:
         Combined binary list
     """
-
-    # エラーハンドリング len(input_files) -> .s, .riscv, or .bin  
-    #                                  -> .s or .riscv,
-    ext_fst = input_files[0].split('.')[-1]
-    if len(input_files) > 1:
-        for file in input_files:
-            ext = file.split('.')[-1]
-            if (ext_fst != ext):
-                raise ValueError(f"入力ファイルの拡張子が{ext_fst}と{ext}で異なります")
-        if (ext_fst not in ["s", "riscv"]):
-            raise ValueError(f"入力ファイルの拡張子: {ext_fst}は .s, .bin, .riscv を満たしません")
-    else: 
-        if (ext_fst not in ["s", "bin", "riscv"]):
-            raise ValueError(f"入力ファイルの拡張子: {ext_fst}は .s, .bin, .riscv を満たしません")
-            
+    
     # 全てのアセンブリファイルをコンカットしてからassembleする
     print(f"Linking {len(input_files)} files...")
 
