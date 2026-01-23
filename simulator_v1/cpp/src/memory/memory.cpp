@@ -159,7 +159,6 @@ MemoryWrite Memory::writeWord(uint32_t address, uint32_t value)
             std::cerr << "Error: Write to MMIO range 0x" << std::hex << address
                       << " (value=0x" << value << ") is not allowed" << std::dec << std::endl;
             result.ok = false;
-            std::exit(1);
         }
         return result;
     }
@@ -208,7 +207,6 @@ MemoryWrite Memory::writeByte(uint32_t address, uint8_t value)
             std::cerr << "Error: Write to MMIO range 0x" << std::hex << address
                       << " (value=0x" << (int)value << ") is not allowed" << std::dec << std::endl;
             result.ok = false;
-            std::exit(1);
         }
         return result;
     }

@@ -657,28 +657,28 @@ void PipelineDebugger::printPipeline() const
     const char *forwardTypeA = "NONE";
     const char *forwardTypeB = "NONE";
     ForwardingUnit::Result forwardingResult = snap.forwarding_snapshot;
-    if (forwardingResult.forwardA == ForwardingUnit::ForwardType::FROM_EX_MEM)
+    if (forwardingResult.forwardAtoID_EX.forwardFrom == Forward::ForwardFromType::FROM_EX_MEM)
         forwardTypeA = "FROM_EX_MEM";
-    else if (forwardingResult.forwardA == ForwardingUnit::ForwardType::FROM_MEM_WB)
+    else if (forwardingResult.forwardAtoID_EX.forwardFrom == Forward::ForwardFromType::FROM_MEM_WB)
         forwardTypeA = "FROM_MEM_WB";
 
-    if (forwardingResult.forwardB == ForwardingUnit::ForwardType::FROM_EX_MEM)
+    if (forwardingResult.forwardBtoID_EX.forwardFrom == Forward::ForwardFromType::FROM_EX_MEM)
         forwardTypeB = "FROM_EX_MEM";
-    else if (forwardingResult.forwardB == ForwardingUnit::ForwardType::FROM_MEM_WB)
+    else if (forwardingResult.forwardBtoID_EX.forwardFrom == Forward::ForwardFromType::FROM_MEM_WB)
         forwardTypeB = "FROM_MEM_WB";
 
     std::cout << "  Forward A:   " << forwardTypeA;
-    if (forwardingResult.forwardA != ForwardingUnit::ForwardType::NONE)
+    if (forwardingResult.forwardAtoID_EX.forwardFrom != Forward::ForwardFromType::NONE)
     {
         std::cout << " (value=0x" << std::hex << std::setw(8) << std::setfill('0')
-                  << forwardingResult.forwardValueA << std::dec << ")";
+                  << forwardingResult.forwardAtoID_EX.forwardValue << std::dec << ")";
     }
     std::cout << "\n";
     std::cout << "  Forward B:   " << forwardTypeB;
-    if (forwardingResult.forwardB != ForwardingUnit::ForwardType::NONE)
+    if (forwardingResult.forwardBtoID_EX.forwardFrom != Forward::ForwardFromType::NONE)
     {
         std::cout << " (value=0x" << std::hex << std::setw(8) << std::setfill('0')
-                  << forwardingResult.forwardValueB << std::dec << ")";
+                  << forwardingResult.forwardBtoID_EX.forwardValue << std::dec << ")";
     }
     std::cout << "\n\n";
 

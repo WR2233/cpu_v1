@@ -1,4 +1,5 @@
 #include "pipeline/pipeline.h"
+#include "pipeline/forwarding/forward_unit.h"
 #include <iostream>
 
 bool PipelineProcessor::memoryAccess()
@@ -22,6 +23,15 @@ bool PipelineProcessor::memoryAccess()
   mem_wb.fpuLatency = (ex_mem.fpuLatency > 0) ? (ex_mem.fpuLatency - 1) : 0;
   mem_wb.operandA = ex_mem.operandA;
   mem_wb.operandB = ex_mem.operandB;
+
+  // WBからMEMへのフォワーディング適用（Store命令のwriteData用）
+  uint32_t writeData = ex_mem.writeData;
+  ForwardingUnit::Result forwardingResult = forwarding.getResult();
+  logSnapshot.forwarding_snapshot = forwardingResult; // ログに保存(要修正)
+  if (forwardingResult.forwardtoEX_MEM.forwardFrom != Forward::ForwardFromType::NONE)
+  {
+    writeData = forwardingResult.forwardtoEX_MEM.forwardValue;
+  }
 
   if (ex_mem.inst.type == InstructionType::F_TYPE &&
       fpuEmulator.requiresFpuPipeline(ex_mem.inst.opcode))
@@ -73,23 +83,23 @@ bool PipelineProcessor::memoryAccess()
   }
   case Opcode::SW:
   {
-    auto res = memory.writeWord(ex_mem.aluResult, ex_mem.writeData);
+    auto res = memory.writeWord(ex_mem.aluResult, writeData);
     if (!res.ok)
     {
       std::cerr << "Error: Memory write out of range at PC=0x" << std::hex << ex_mem.pc
                 << " address=0x" << ex_mem.aluResult
-                << " value=0x" << ex_mem.writeData << std::dec << std::endl;
+                << " value=0x" << writeData << std::dec << std::endl;
       std::cerr << "  Instruction: SW" << std::endl;
       pipelineFrozen = true;
       executed_ebreak = true;
-      std::exit(1);
+      return false;
     }
     if (res.ok)
     {
       logSnapshot.dataBus.valid = true;
       logSnapshot.dataBus.write = true;
       logSnapshot.dataBus.address = ex_mem.aluResult;
-      logSnapshot.dataBus.writeData = ex_mem.writeData;
+      logSnapshot.dataBus.writeData = writeData;
       if (res.cacheMiss)
       {
         cacheMissPenaltyRemaining = CACHE_MISS_PENALTY;
@@ -105,23 +115,23 @@ bool PipelineProcessor::memoryAccess()
   }
   case Opcode::SB:
   {
-    auto res = memory.writeByte(ex_mem.aluResult, static_cast<uint8_t>(ex_mem.writeData & 0xFF));
+    auto res = memory.writeByte(ex_mem.aluResult, static_cast<uint8_t>(writeData & 0xFF));
     if (!res.ok)
     {
       std::cerr << "Error: Memory write out of range at PC=0x" << std::hex << ex_mem.pc
                 << " address=0x" << ex_mem.aluResult
-                << " value=0x" << (ex_mem.writeData & 0xFF) << std::dec << std::endl;
+                << " value=0x" << (writeData & 0xFF) << std::dec << std::endl;
       std::cerr << "  Instruction: SB" << std::endl;
       pipelineFrozen = true;
       executed_ebreak = true;
-      std::exit(1);
+      return false;
     }
     if (res.ok)
     {
       logSnapshot.dataBus.valid = true;
       logSnapshot.dataBus.write = true;
       logSnapshot.dataBus.address = ex_mem.aluResult;
-      logSnapshot.dataBus.writeData = ex_mem.writeData & 0xFF;
+      logSnapshot.dataBus.writeData = writeData & 0xFF;
       if (res.cacheMiss)
       {
         cacheMissPenaltyRemaining = CACHE_MISS_PENALTY;
@@ -157,13 +167,13 @@ bool PipelineProcessor::memoryAccess()
   }
   case Opcode::FSW:
   {
-    auto res = memory.writeWord(ex_mem.aluResult, ex_mem.writeData);
+    auto res = memory.writeWord(ex_mem.aluResult, writeData);
     if (res.ok)
     {
       logSnapshot.dataBus.valid = true;
       logSnapshot.dataBus.write = true;
       logSnapshot.dataBus.address = ex_mem.aluResult;
-      logSnapshot.dataBus.writeData = ex_mem.writeData;
+      logSnapshot.dataBus.writeData = writeData;
       if (res.cacheMiss)
       {
         cacheMissPenaltyRemaining = CACHE_MISS_PENALTY;

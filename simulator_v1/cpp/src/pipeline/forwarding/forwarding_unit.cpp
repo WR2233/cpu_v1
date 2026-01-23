@@ -9,51 +9,68 @@ void ForwardingUnit::compute(
     const FPUEmulator &fpuEmulator)
 {
   Result forwarding{
-      ForwardType::NONE,
-      ForwardType::NONE,
-      0,
-      0};
+      {Forward::ForwardFromType::NONE, 0},
+      {Forward::ForwardFromType::NONE, 0},
+      {Forward::ForwardFromType::NONE, 0}};
 
+  // ID_EXへのフォワーディング
   bool wantsA = (id_ex.inst.rs1Type != RegType::None);
   bool wantsB = (id_ex.inst.rs2Type != RegType::None);
 
+  // EX_MEMからID_EXへフォワード
   if (canUseExMem(ex_mem, fpuEmulator, id_ex.inst.rs1Type) && ex_mem.writeReg == id_ex.rs1 && wantsA)
   {
-    forwarding.forwardA = ForwardingUnit::ForwardType::FROM_EX_MEM;
-    forwarding.forwardValueA = ex_mem.aluResult;
+    forwarding.forwardAtoID_EX = {Forward::ForwardFromType::FROM_EX_MEM, ex_mem.aluResult};
   }
   if (canUseExMem(ex_mem, fpuEmulator, id_ex.inst.rs2Type) && ex_mem.writeReg == id_ex.rs2 && wantsB)
   {
-    forwarding.forwardB = ForwardingUnit::ForwardType::FROM_EX_MEM;
-    forwarding.forwardValueB = ex_mem.aluResult;
+    forwarding.forwardBtoID_EX = {Forward::ForwardFromType::FROM_EX_MEM, ex_mem.aluResult};
   }
 
-  if (forwarding.forwardA == ForwardingUnit::ForwardType::NONE &&
+  // MEM_WBからID_EXへフォワード
+  if (forwarding.forwardAtoID_EX.forwardFrom == Forward::ForwardFromType::NONE &&
       canUseWb(wb, id_ex.inst.rs1Type) && wb.writeReg == id_ex.rs1 && wantsA)
   {
-    forwarding.forwardA = ForwardingUnit::ForwardType::FROM_MEM_WB;
+    forwarding.forwardAtoID_EX = {Forward::ForwardFromType::FROM_MEM_WB, 0};
     if (wb.inst.opcode == Opcode::LW || wb.inst.opcode == Opcode::LB || wb.inst.opcode == Opcode::FLW)
     {
-      forwarding.forwardValueA = wb.memData;
+      forwarding.forwardAtoID_EX.forwardValue = wb.memData;
     }
     else
     {
-      forwarding.forwardValueA = wb.aluResult;
+      forwarding.forwardAtoID_EX.forwardValue = wb.aluResult;
     }
   }
-  if (forwarding.forwardB == ForwardingUnit::ForwardType::NONE &&
+  if (forwarding.forwardBtoID_EX.forwardFrom == Forward::ForwardFromType::NONE &&
       canUseWb(wb, id_ex.inst.rs2Type) && wb.writeReg == id_ex.rs2 && wantsB)
   {
-    forwarding.forwardB = ForwardingUnit::ForwardType::FROM_MEM_WB;
+    forwarding.forwardBtoID_EX = {Forward::ForwardFromType::FROM_MEM_WB, 0};
     if (wb.inst.opcode == Opcode::LW || wb.inst.opcode == Opcode::LB || wb.inst.opcode == Opcode::FLW)
     {
-      forwarding.forwardValueB = wb.memData;
+      forwarding.forwardBtoID_EX.forwardValue = wb.memData;
     }
     else
     {
-      forwarding.forwardValueB = wb.aluResult;
+      forwarding.forwardBtoID_EX.forwardValue = wb.aluResult;
     }
   }
+
+  // MEM_WBからEX_MEMへフォワード (SW/SB/FSW命令のrs2用)
+  wantsB = (ex_mem.inst.rs2Type != RegType::None);
+  if (forwarding.forwardtoEX_MEM.forwardFrom == Forward::ForwardFromType::NONE &&
+      canUseWb(wb, ex_mem.inst.rs2Type) && wb.writeReg == ex_mem.rs2 && wantsB)
+  {
+    forwarding.forwardtoEX_MEM = {Forward::ForwardFromType::FROM_MEM_WB, 0};
+    if (wb.inst.opcode == Opcode::LW || wb.inst.opcode == Opcode::LB || wb.inst.opcode == Opcode::FLW)
+    {
+      forwarding.forwardtoEX_MEM.forwardValue = wb.memData;
+    }
+    else
+    {
+      forwarding.forwardtoEX_MEM.forwardValue = wb.aluResult;
+    }
+  }
+  // 結果を保存
   forwardingResult = forwarding;
 }
 
@@ -76,7 +93,6 @@ bool ForwardingUnit::canUseExMem(const EX_MEM &ex_mem, const FPUEmulator &fpuEmu
 
 bool ForwardingUnit::canUseWb(const MEM_WB &wb, RegType targetType) const
 {
-
   if (wb.inst.rdType != targetType || wb.inst.rdType == RegType::None)
   {
     return false;

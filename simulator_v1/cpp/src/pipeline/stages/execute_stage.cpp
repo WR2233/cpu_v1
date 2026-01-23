@@ -36,14 +36,14 @@ void PipelineProcessor::execute()
   ex_mem.operandB = id_ex.readData2;
   ForwardingUnit::Result forwardingResult = forwarding.getResult();
   logSnapshot.forwarding_snapshot = forwardingResult; // ログに保存
-  if (forwardingResult.forwardA != ForwardingUnit::ForwardType::NONE)
+  if (forwardingResult.forwardAtoID_EX.forwardFrom != Forward::ForwardFromType::NONE)
   {
-    ex_mem.operandA = forwardingResult.forwardValueA;
+    ex_mem.operandA = forwardingResult.forwardAtoID_EX.forwardValue;
   }
 
-  if (forwardingResult.forwardB != ForwardingUnit::ForwardType::NONE)
+  if (forwardingResult.forwardBtoID_EX.forwardFrom != Forward::ForwardFromType::NONE)
   {
-    ex_mem.operandB = forwardingResult.forwardValueB;
+    ex_mem.operandB = forwardingResult.forwardBtoID_EX.forwardValue;
   }
 
   // ALU演算
@@ -157,6 +157,7 @@ void PipelineProcessor::execute()
 
   case InstructionType::S_TYPE:
     ex_mem.writeReg = 0; // ストア命令は書き込まない
+    ex_mem.rs2 = id_ex.rs2; // フォワーディング判定用
     // アドレス計算（符号拡張されたオフセットを加算）
     ex_mem.aluResult = ex_mem.operandA + id_ex.immediate;
     ex_mem.writeData = ex_mem.operandB; // ストアするデータ

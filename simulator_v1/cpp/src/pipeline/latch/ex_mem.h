@@ -11,12 +11,13 @@ struct EX_MEM
   uint32_t operandA;
   uint32_t operandB;
   uint8_t writeReg;
+  uint8_t rs2; // Store命令のフォワーディング用
   bool branch;
   uint32_t branchTarget;
   bool stall;
   uint8_t fpuLatency; // 残りのFPUレイテンシ（サイクル数）
 
-  EX_MEM() : pc(0), aluResult(0), writeData(0), writeReg(0),
+  EX_MEM() : pc(0), aluResult(0), writeData(0), writeReg(0), rs2(0),
              branch(false), branchTarget(0), stall(false), fpuLatency(0) {}
 };
 

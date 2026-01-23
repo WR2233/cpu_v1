@@ -9,24 +9,29 @@
 
 class FPUEmulator;
 
-// フォワーディング制御
-class ForwardingUnit
+struct Forward
 {
-public:
-  enum class ForwardType
+  enum class ForwardFromType
   {
     NONE,
     FROM_EX_MEM,
     FROM_MEM_WB
   };
+  ForwardFromType forwardFrom;
+  uint32_t forwardValue; // 実際にフォワードする値
+};
 
+// フォワーディング制御
+class ForwardingUnit
+{
+public:
   struct Result
   {
-    ForwardType forwardA;
-    ForwardType forwardB;
-    uint32_t forwardValueA; // 実際にフォワードする値
-    uint32_t forwardValueB; // 実際にフォワードする値
+    Forward forwardAtoID_EX;
+    Forward forwardBtoID_EX;
+    Forward forwardtoEX_MEM;
   };
+
   void compute(
       const ID_EX &id_ex,
       const EX_MEM &ex_mem,
