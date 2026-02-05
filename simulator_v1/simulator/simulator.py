@@ -35,6 +35,14 @@ class Simulator:
     def get_mmioh(self, value):
         """Set MMIO history tracking flag"""
         self.state.get_mmioh = value
+
+    @property
+    def get_regh(self):
+        return self.state.get_regh
+    
+    @get_regh.setter
+    def get_regh(self, value):
+        self.state.get_regh = value
     
     @property
     def get_pch(self):
@@ -165,6 +173,8 @@ class Simulator:
     def dump_mh(self):
         """Return memory access history"""
         return self.state.write_his, self.state.read_his
+    def dump_regh(self):
+        return  self.state.int_reg_his, self.state.fp_reg_his
     
     def dump_mmioh(self):
         """Return MMIO history"""

@@ -10,6 +10,7 @@ import os
 import argparse
 import traceback
 from typing import Optional, List
+import numpy as np
 
 # Add parent directory to path to access assembler module
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
@@ -30,7 +31,14 @@ def format_history(history, access_type):
         for addr, value in history:
             # Convert to unsigned 32-bit for proper hex display
             addr_u = addr & 0xFFFFFFFF
-            value_u = value & 0xFFFFFFFF
+
+            # Handle floating-point values
+            if access_type == "fp_reg":
+                # Convert float32 to its bit representation
+                value_u = np.float32(value).view(np.uint32)
+            else:
+                value_u = value & 0xFFFFFFFF
+
             if access_type == "MMIO":
                 value_u_byte = value_u & 0xFF
                 lines.append(f"0x{value_u_byte:02x}")
@@ -39,7 +47,7 @@ def format_history(history, access_type):
                 lines.append(f"0x{value_u:08x}")
     return "\n".join(lines)
 
-def preserve_history(write_his= (None, None), read_his= (None, None), mmio_his= (None, None), pc_his=(None, None)):
+def preserve_history(write_his= (None, None), read_his= (None, None), mmio_his= (None, None), pc_his=(None, None), int_reg_his = (None, None) , fp_reg_his = (None, None)):
     if write_his[0] :
         write_text = format_history(write_his[0], "Memory Write")
         read_text = format_history(read_his[0], "Memory Read")
@@ -109,9 +117,25 @@ def preserve_history(write_his= (None, None), read_his= (None, None), mmio_his= 
             print("="*50)
             print(pc_txt)
             print("="*50)
+    if int_reg_his[0]:
+        int_reg_text = format_history(int_reg_his[0], "int_reg")
+        fp_reg_text = format_history(fp_reg_his[0], "fp_reg")
+        int_reg_path, fp_reg_path = int_reg_his[1], fp_reg_his[1]
+        print(f"\nWriting register change history:")
+        print(f"  int_reghistory -> {int_reg_path}")
+        print(f"  fp_reg history  -> {fp_reg_path}")
+
+        with open(int_reg_path, 'w', encoding='utf-8') as f:
+            f.write(int_reg_text)
+        with open(fp_reg_path, 'w', encoding='utf-8') as f:
+            f.write(fp_reg_text)
+
+        print(f"register change history saved successfully.")
+        print(f"  Total int reg: {len(int_reg_his[0])}")
+        print(f"  Total fp  reg:  {len(fp_reg_his[0])}")
     return
 
-def run_simulator(binary: list, mh: Optional[list] = None, mmio_path: str = '', sld_file: str = None, pc_path: Optional[str] = None):
+def run_simulator(binary: list, mh: Optional[list] = None, mmio_path: str = '', sld_file: str = None, pc_path: Optional[str] = None, reg_his: bool= False):
     # Create simulator
     sim = Simulator()
     if mh is not None:
@@ -120,6 +144,8 @@ def run_simulator(binary: list, mh: Optional[list] = None, mmio_path: str = '', 
         sim.get_mmioh = True
     if pc_path is not None:
         sim.get_pch = True
+    if reg_his is True:
+        sim.get_regh = True
     # Always track stack trace for debugger
     sim.get_stack_trace = True
 
@@ -155,20 +181,25 @@ def run_simulator(binary: list, mh: Optional[list] = None, mmio_path: str = '', 
     read_his  = None
     mmio_his  = None
     pc_his    = None
+    int_reg_his = None
+    fp_reg_his = None
+    
     if sim.get_mh:
         write_his, read_his = sim.dump_mh() 
     if sim.get_mmioh:
         mmio_his = sim.dump_mmioh()
     if sim.get_pch:
         pc_his = sim.dump_pch()
+    if sim.get_regh:
+        int_reg_his, fp_reg_his = sim.dump_regh()
     if mh is not None:
-        preserve_history((write_his, mh[0]), (read_his, mh[1]), (mmio_his, mmio_path), (pc_his, pc_path))
+        preserve_history((write_his, mh[0]), (read_his, mh[1]), (mmio_his, mmio_path), (pc_his, pc_path), (int_reg_his, "./simulator/log/int_reg_history.txt"), (fp_reg_his, "./simulator/log/fp_reg_history.txt"))
     else:
-        preserve_history((write_his, None), (read_his, None), (mmio_his, mmio_path), (pc_his, pc_path))
+        preserve_history((write_his, None), (read_his, None), (mmio_his, mmio_path), (pc_his, pc_path), (int_reg_his, "./simulator/log/int_reg_history.txt"), (fp_reg_his, "./simulator/log/fp_reg_history.txt"))
     return
 
 
-def run_with_files(input_files: list, mh: Optional[list] = None, mmioh: Optional[str] = None, sld_file: str = None, pch: Optional[str] = None):
+def run_with_files(input_files: list, mh: Optional[list] = None, mmioh: Optional[str] = None, sld_file: str = None, pch: Optional[str] = None, reg_his: bool = False):
     """Run simulator on multiple assembly files (linker mode)
 
     Args:
@@ -192,7 +223,7 @@ def run_with_files(input_files: list, mh: Optional[list] = None, mmioh: Optional
         binary = link_files(input_files)
         print(f"Assembled {len(binary)} instructions\n")
 
-    run_simulator(binary, mh, mmioh, sld_file, pch)
+    run_simulator(binary, mh, mmioh, sld_file, pch, reg_his)
 
 
 def main():
@@ -241,6 +272,12 @@ def main():
         action='store_true',
         help='--get-memory-history write.txt read.txt --get-mmio-history mmio_history.txt --get-pc-history pc_history.txt と等価'
     )
+    
+    parser.add_argument(
+        '--get-reg-history',
+        action= 'store_true',
+        help='レジスタヒストリーを出力する'
+    )
     args = parser.parse_args()
 
     # Validate input files
@@ -269,10 +306,9 @@ def main():
         mh = ["./simulator/log/write.txt", "./simulator/log/read.txt"]
         mmio_history_path = "./simulator/log/mmio_history.txt"
         pc_history_path = "./simulator/log/pc_history.txt"
-        
     # Run simulator
     try:
-        run_with_files(args.input, mh, mmio_history_path, args.input_sld, pc_history_path)
+        run_with_files(args.input, mh, mmio_history_path, args.input_sld, pc_history_path, args.get_reg_history)
     except Exception as e:
         print(f"Error: {e}", file=sys.stderr)
         traceback.print_exc()

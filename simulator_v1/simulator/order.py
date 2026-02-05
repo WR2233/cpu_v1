@@ -89,9 +89,11 @@ def get_reg(state: State, r: int) -> int:
 
 
 def set_reg(state: State, r: int, value: int):
-    """Set register value - x0 and gp(x3) are read-only"""
-    if r != 0 and r != 3:  # x0とgp(x3)は書き込み禁止
+    """Set register value - x0 is  read-only"""
+    if r != 0 :  # x0は書き込み禁止
         state.regs[r] = np.int32(value)
+        if state.get_regh:
+            state.int_reg_his.append((r, np.int32(value)))
 
 
 def get_freg(state: State, r: int) -> np.float32:
@@ -102,6 +104,8 @@ def get_freg(state: State, r: int) -> np.float32:
 def set_freg(state: State, r: int, value: float):
     """Set floating-point register value"""
     state.fregs[r] = np.float32(value)
+    if state.get_regh:
+        state.fp_reg_his.append((r, np.float32(value)))
 
 
 def get_byte(state: State, addr: int, record_history: bool = False) -> int:

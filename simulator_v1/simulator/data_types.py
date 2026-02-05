@@ -83,3 +83,6 @@ class State:
         self.mmio_his = []                             # MMIO history: list of (addr, value)
         self.get_stack_trace = False                   # Stack trace tracking flag
         self.call_stack = []                           # Call stack: list of (caller_pc, target_pc, return_addr)
+        self.get_regh = False
+        self.int_reg_his = []
+        self.fp_reg_his = []
