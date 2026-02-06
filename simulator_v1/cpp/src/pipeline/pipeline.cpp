@@ -28,7 +28,8 @@ PipelineProcessor::PipelineProcessor()
       loadedInstructionCount(0),
       pipelineFrozen(false),
       cacheMissPenaltyRemaining(0),
-      executed_ebreak(false)
+      executed_ebreak(false),
+      ebreak_detected(false)
 {
     registers.fill(0);
     fpRegisters.fill(0);

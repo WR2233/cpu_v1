@@ -7,6 +7,12 @@ void PipelineProcessor::fetch()
     return;
   }
 
+  // EBREAKが検出されたら、これ以上命令をフェッチしない
+  if (ebreak_detected)
+  {
+    return;
+  }
+
   if (hazard.shouldFlush())
   {
     // フラッシュ時も新しいPCから命令フェッチ

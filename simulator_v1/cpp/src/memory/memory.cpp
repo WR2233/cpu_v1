@@ -194,6 +194,7 @@ MemoryWrite Memory::writeByte(uint32_t address, uint8_t value)
             std::ofstream ofs(mmioFilePath, std::ios::out | std::ios::binary | std::ios::app);
             if (ofs)
             {
+                std::cerr << "Error: Not found MMIO output file" <<  mmioFilePath << std::endl;
                 ofs.write(reinterpret_cast<char *>(&value), 1);
                 result.ok = true;
                 result.mmio = true;

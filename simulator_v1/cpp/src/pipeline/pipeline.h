@@ -63,6 +63,7 @@ private:
 
     // 実行終了判定
     bool executed_ebreak;
+    bool ebreak_detected;
 
 public:
     PipelineProcessor();

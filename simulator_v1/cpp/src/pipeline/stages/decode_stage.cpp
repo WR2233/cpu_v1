@@ -50,6 +50,12 @@ void PipelineProcessor::decode()
   id_ex.inst.decode(if_id.instruction);
   id_ex.pc = if_id.pc;
 
+  // EBREAKを検出したらフラグを立てる
+  if (id_ex.inst.type == InstructionType::EBREAK)
+  {
+    ebreak_detected = true;
+  }
+
   if (id_ex.inst.type == InstructionType::NOP)
   {
     id_ex.readData1 = 0;
