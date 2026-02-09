@@ -86,3 +86,4 @@ class State:
         self.get_regh = False
         self.int_reg_his = []
         self.fp_reg_his = []
+        self.output_file = ""

@@ -19,7 +19,7 @@ namespace
 PipelineProcessor::PipelineProcessor()
     : registers{},
       fpRegisters{},
-      memory(1 << 29, 1 << 18, "./log/output_mmio.ppm", 1 << 20), // moderate sizes to avoid overallocation
+      memory(1ULL <<30, 1ULL << 30, "./log/output_mmio.bin", 1ULL << 30),
       pc(0),
       cycleCount(0),
       instructionCount(0),
@@ -248,7 +248,7 @@ void PipelineProcessor::clock()
 
 void PipelineProcessor::detectForwarding()
 {
-    forwarding.compute(id_ex, ex_mem, mem_wb, fpuEmulator);
+    forwarding.compute(id_ex, ex_mem, wb, fpuEmulator);
 }
 
 void PipelineProcessor::detectHazards()

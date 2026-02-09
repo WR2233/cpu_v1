@@ -174,7 +174,7 @@ def encode_j_type(opcode: int, rd: int, imm: int) -> int:
     # J-type format: imm[20|10:1|11|19:12] rd opcode
     return (imm_20 << 31) | (imm_10_1 << 21) | (imm_11 << 20) | (imm_19_12 << 12) | (rd << 7) | opcode
 
-def assemble_instruction(inst: str, labels: Dict[str, int], data_labels: Dict[str, int], pc: int, labels_with_file_num: Dict = None, file_num: int = None) -> int:
+def assemble_instruction(inst: str, labels: Dict[str, int], data_labels: Dict[str, int], pc: int, labels_with_file_num: Dict = {}, file_num: int = 0) -> int:
     """Assemble a single instruction
     Args:
        inst: アセンブリ命令の文字列 （例: "add x1, x2, x3"）
@@ -687,33 +687,6 @@ def assemble(source: str, file_change_line: List[int] = None, return_line_mappin
         return binary, pc_to_source_line
     else:
         return binary
-
-
-def assemble_file(input_file: str, output_file: str = None, output_format: str = "hex", data_output_file: str = None) -> List[int]:
-    """Assemble a RISC-V assembly file
-    Args:
-       input_file: アセンブリファイルのパス
-       output_file: 出力ファイルのパス（省略可能）
-       output_format: 出力形式 ("hex" or "binary")
-       data_output_file: データセクション出力ファイル（simulatorモードで使用）
-    Returns:       機械語のリスト
-    """
-    with open(input_file, 'r', encoding='utf-8') as f:
-        source = f.read()
-
-    binary = assemble(source)
-
-    if output_file:
-        if output_format == 'binary':
-            with open(output_file, 'wb') as f:
-                for code in binary:
-                    f.write(code.to_bytes(4, byteorder='little'))
-        else:
-            with open(output_file, 'w', encoding='utf-8') as f:
-                for code in binary:
-                    f.write(f"0x{code:08x}\n")
-    return binary
-
 
 def link_files(input_files, output=None, format='hex', assemble_output=None, pc_mapping_output=None):
     """Link multiple assembly files by merging source code

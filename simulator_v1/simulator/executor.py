@@ -50,7 +50,7 @@ def execute_r_type(state: State, inst: RType):
     elif inst.opcode == 0x53:  # Floating-point R-type
         frs1_val = get_freg(state, inst.rs1)
         frs2_val = get_freg(state, inst.rs2)
-
+        fresult = np.float32(0.0)
         if inst.funct7 == 0x00:  # FADD
             fresult = frs1_val + frs2_val
         elif inst.funct7 == 0x04:  # FSUB

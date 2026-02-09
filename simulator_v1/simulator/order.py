@@ -77,7 +77,10 @@ def create_state() -> State:
         if reg_idx == 0:
             continue  # x0 is hardwired to zero
         state.regs[reg_idx] = np.uint32(value)
-
+    output_file = "./simulator/log/mmio_output.bin"
+    if output_file is not None:
+        print(f"MMIO output will be written to: {output_file}")
+        state.output_file = output_file
     return state
 
 
@@ -142,6 +145,9 @@ def set_byte(state: State, addr: int, value: int):
         if state.get_mmioh:
             state.mmio_his.append((addr, byte))
         print(char, end='', flush=True, file=sys.stderr)
+        if state.output_file:
+            with open(state.output_file, 'ab') as f:
+                f.write(bytes([byte]))
     # BRAM: 0x80000000 ~ 0xFFFF0000 (excluding MMIO)
     elif addr >= 0x80000000 and addr < 0xFFFF0000:
         state.bram[addr] = value & 0xFF
